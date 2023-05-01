@@ -8,22 +8,80 @@ namespace mis_221_pa_5_rtmccanna
             this.listings = listings;
         }
 
+        public string GetMenuChoice(){
+            this.DisplayMenu();
+            string userInput = Console.ReadLine();
+
+            while (!ValidMenuChoice(userInput)) {
+            Console.WriteLine("Invalid menu choice!\nPlease Enter a Valid Menu Choice.");
+            Console.WriteLine("Press any key to continue....");
+            Console.ReadKey();
+
+            this.DisplayMenu();
+            userInput = Console.ReadLine();
+            }
+
+            while (userInput != "4") {
+                Route(userInput);
+                userInput = GetMenuChoice();
+            }
+            
+
+            return userInput;
+        }
+
+        private void DisplayMenu() {
+            Console.Clear();
+            System.Console.WriteLine("1:    Add Listing\n2:    Edit Listing\n3:    Delete Listing\n4:    Exit");
+            this.PrintAllListings();
+        }
+
+        static private bool ValidMenuChoice(string userInput){
+            if (Convert.ToInt32(userInput) == 1 || Convert.ToInt32(userInput) == 2 || Convert.ToInt32(userInput) == 3 || Convert.ToInt32(userInput) == 4) {
+            return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        private void Route(string userInput){
+            if (Convert.ToInt32(userInput) == 1) {
+                this.AddListing();
+            }
+            if (Convert.ToInt32(userInput) == 2) {
+                this.UpdateListing();
+            }
+            if (Convert.ToInt32(userInput) == 3) {
+        
+            }
+        }
+
         public void GetAlllistings() {
             Listing.SetCount(0);
-            System.Console.WriteLine("Please enter the Name or stop to stop");
+            System.Console.WriteLine("Please enter the Listing ID or stop to stop");
             string userInput = Console.ReadLine();
             while(userInput.ToUpper() != "STOP") {
                 listings[Listing.GetCount()] = new Listing();
-                listings[Listing.GetCount()].SetName(userInput);
+                listings[Listing.GetCount()].SetListingID(userInput);
 
-                System.Console.WriteLine("Please Enter the ID:");
-                listings[Listing.GetCount()].SetID(Console.ReadLine());
+                System.Console.WriteLine("Please Enter the Listing's ID:");
+                listings[Listing.GetCount()].SetListingID(Console.ReadLine());
 
-                System.Console.WriteLine("Please Enter the number of Pages:");
-                listings[Listing.GetCount()].SetEmailAddress(Console.ReadLine());
+                System.Console.WriteLine("Please Enter the corresponding Trainer's Name:");
+                listings[Listing.GetCount()].SetTrainerName(Console.ReadLine());
                 
-                System.Console.WriteLine("Please Enter the Genre:");
-                listings[Listing.GetCount()].SetMailingAddress(Console.ReadLine());
+                System.Console.WriteLine("Please Enter the corresponding Date:");
+                listings[Listing.GetCount()].SetDate(Console.ReadLine());
+
+                System.Console.WriteLine("Please Enter the corresponding Time:");
+                listings[Listing.GetCount()].SetTime(Console.ReadLine());
+
+                System.Console.WriteLine("Please Enter the corresponding Price:");
+                listings[Listing.GetCount()].SetCost(int.Parse(Console.ReadLine()));
+
+                System.Console.WriteLine("Please Enter the Listing's Status:");
+                listings[Listing.GetCount()].SetStatus(Console.ReadLine());
                 Listing.IncCount();
 
                 System.Console.WriteLine("Please enter the Name or stop to stop");
@@ -31,7 +89,7 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
-        public void GetAlllistingsFromFile() {
+        public void GetAllListingsFromFile() {
             StreamReader inFile = new StreamReader("listings.txt");
             
             // process
@@ -40,7 +98,7 @@ namespace mis_221_pa_5_rtmccanna
             while (line != null) {
                 string[] temp = line.Split('#');
                 // wordCount += temp.Length;
-                listings[Listing.GetCount()] = new Listing(temp[0], temp[1], temp[2], temp[3]);
+                listings[Listing.GetCount()] = new Listing(temp[0], temp[1], temp[2], temp[3], int.Parse(temp[4]), temp[5]);
                 Listing.IncCount();
                 line = inFile.ReadLine();
             }
@@ -48,15 +106,19 @@ namespace mis_221_pa_5_rtmccanna
             inFile.Close();
         }
         public void AddListing() {
-            System.Console.WriteLine("Please Enter your Name:");
+            System.Console.WriteLine("Please enter the Listing ID:");
             Listing myListing = new Listing();
-            myListing.SetName(Console.ReadLine());
-            System.Console.WriteLine("Please enter your ID:");
-            myListing.SetID(Console.ReadLine());
-            System.Console.WriteLine("Please enter your Email Address:");
-            myListing.SetEmailAddress(Console.ReadLine());
-            System.Console.WriteLine("Please enter your Mailing Address:");
-            myListing.SetMailingAddress(Console.ReadLine());
+            myListing.SetListingID(Console.ReadLine());
+            System.Console.WriteLine("Please enter the Trainer's Name:");
+            myListing.SetTrainerName(Console.ReadLine());
+            System.Console.WriteLine("Please enter the Listing Date:");
+            myListing.SetDate(Console.ReadLine());
+            System.Console.WriteLine("Please enter the Listing's Time:");
+            myListing.SetTime(Console.ReadLine());
+            System.Console.WriteLine("Please enter the Listing's Price:");
+            myListing.SetCost(int.Parse(Console.ReadLine()));
+            System.Console.WriteLine("Please enter the Listing's Status:");
+            myListing.SetStatus(Console.ReadLine());
 
             listings[Listing.GetCount()] = myListing;
             Listing.IncCount();
@@ -77,7 +139,7 @@ namespace mis_221_pa_5_rtmccanna
 
         private int Find (string searchVal) {
             for (int i = 0; i < Listing.GetCount(); i++) {
-                if(listings[i].GetName().ToUpper() == searchVal.ToUpper()) {
+                if(listings[i].GetListingID().ToUpper() == searchVal.ToUpper()) {
                     return i;
                 }
             }
@@ -86,19 +148,23 @@ namespace mis_221_pa_5_rtmccanna
         }
 
         public void UpdateListing() {
-            System.Console.WriteLine("What is the Name of the Listing that you would like to update?");
+            System.Console.WriteLine("What is the Listing ID of the listing you would like to update?");
             string searchVal = Console.ReadLine();
             int foundIndex = Find(searchVal);
 
             if (foundIndex != -1) {
-                System.Console.WriteLine("Please Enter Listing's Name:");
-                listings[foundIndex].SetName(Console.ReadLine());
-                System.Console.WriteLine("Please enter the Listing's ID:");
-                listings[foundIndex].SetID(Console.ReadLine());
-                System.Console.WriteLine("Please enter the Listing's Email Address:");
-                listings[foundIndex].SetEmailAddress(Console.ReadLine());
-                System.Console.WriteLine("Please enter the Listing's Mailing Address:");
-                listings[foundIndex].SetMailingAddress(Console.ReadLine());
+                System.Console.WriteLine("Please Enter Listing's ID:");
+                listings[foundIndex].SetListingID(Console.ReadLine());
+                System.Console.WriteLine("Please enter the corresponding Trainer's Name:");
+                listings[foundIndex].SetTrainerName(Console.ReadLine());
+                System.Console.WriteLine("Please enter the Listing's Date:");
+                listings[foundIndex].SetDate(Console.ReadLine());
+                System.Console.WriteLine("Please enter the Listing's Time:");
+                listings[foundIndex].SetTime(Console.ReadLine());
+                System.Console.WriteLine("Please enter the Listing's Price:");
+                listings[foundIndex].SetCost(int.Parse(Console.ReadLine()));
+                System.Console.WriteLine("Please enter the Listing's Status:");
+                listings[foundIndex].SetStatus(Console.ReadLine());
             
                 Save();
             }
@@ -128,6 +194,12 @@ namespace mis_221_pa_5_rtmccanna
             Listing temp = listings[x];
             listings[x] = listings[y];
             listings[y] = temp;
+        }
+
+        public void PrintAllListings() {
+            for (int i = 0; i < Listing.GetCount(); i++){
+                System.Console.WriteLine(listings[i].ToString());
+            }
         }
     }
 }

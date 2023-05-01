@@ -8,8 +8,8 @@ namespace mis_221_pa_5_rtmccanna
             this.bookings = bookings;
         }
 
-        static string GetMenuChoice(){
-            DisplayMenu();
+        public string GetMenuChoice(){
+            this.DisplayMenu();
             string userInput = Console.ReadLine();
 
             while (!ValidMenuChoice(userInput)) {
@@ -17,20 +17,24 @@ namespace mis_221_pa_5_rtmccanna
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
 
-            DisplayMenu();
+            this.DisplayMenu();
             userInput = Console.ReadLine();
+            }
+            while (userInput != "4") {
+                Route(userInput);
+                userInput = GetMenuChoice();
             }
 
             return userInput;
         }
 
-        static void DisplayMenu() {
+        private void DisplayMenu() {
             Console.Clear();
-            System.Console.WriteLine("1:    Add Booking\n2:    Edit Booking\n3:    Delete Booking\n4:    Exit");
-            PrintAllBookings();
+            System.Console.WriteLine("Booking Options:\n1:    Add Booking\n2:    Edit Booking\n3:    Delete Booking\n4:    Exit");
+            this.PrintAllBookings();
         }
 
-        static bool ValidMenuChoice(string userInput){
+        private bool ValidMenuChoice(string userInput){
             if (Convert.ToInt32(userInput) == 1 || Convert.ToInt32(userInput) == 2 || Convert.ToInt32(userInput) == 3 || Convert.ToInt32(userInput) == 4) {
             return true;
             }
@@ -39,12 +43,12 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
-        static void Route(string userInput){
+        private void Route(string userInput){
             if (Convert.ToInt32(userInput) == 1) {
-                AddBooking();
+                this.AddBooking();
             }
             if (Convert.ToInt32(userInput) == 2) {
-                UpdateBooking();
+                this.UpdateBooking();
             }
             if (Convert.ToInt32(userInput) == 3) {
         

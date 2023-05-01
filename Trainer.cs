@@ -66,7 +66,7 @@ namespace mis_221_pa_5_rtmccanna
 
         public override string ToString()
         {
-            return $"{count}:    {name}    {ID}    {mailingAddress}    {emailAddress}";
+            return $"{name}    {ID}    {mailingAddress}    {emailAddress}";
         }
 
         public string ToFile()

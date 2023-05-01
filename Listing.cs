@@ -28,7 +28,7 @@ namespace mis_221_pa_5_rtmccanna
             this.listingID = listingID;
         }
 
-        public void GetListingID() {
+        public string GetListingID() {
             return listingID;
         }
 
@@ -36,7 +36,7 @@ namespace mis_221_pa_5_rtmccanna
             this.trainerName = trainerName;
         }
 
-        public void GetTrainerName() {
+        public string GetTrainerName() {
             return trainerName;
         }
 
@@ -44,7 +44,7 @@ namespace mis_221_pa_5_rtmccanna
             this.date = date;
         }
 
-        public void GetDate() {
+        public string GetDate() {
             return date;
         }
 
@@ -52,15 +52,15 @@ namespace mis_221_pa_5_rtmccanna
             this.time = time;
         }
 
-        public void GetTime() {
+        public string GetTime() {
             return time;
         }
 
-        public void SetCost(string cost) {
+        public void SetCost(int cost) {
             this.cost = cost;
         }
 
-        public void GetCost() {
+        public int GetCost() {
             return cost;
         }
 
@@ -68,26 +68,30 @@ namespace mis_221_pa_5_rtmccanna
             this.status = status;
         }
 
-        public void GetStatus() {
+        public string GetStatus() {
             return status;
         }
 
-        public void SetCount() {
-            this.count = count;
+        static public void SetCount(int count) {
+            Listing.count = count;
         }
 
-        public void GetCount() {
+        static public void IncCount() {
+            count++;
+        }
+
+        static public int GetCount() {
             return count;
         }
 
         public override string ToString()
         {
-            return $"";
+            return $"{listingID}    {trainerName}    {date}    {time}    {cost}    {status}";
         }
 
         public string ToFile()
         {
-            return $"";
+            return $"{listingID}#{trainerName}#{date}#{time}#{cost}#{status}";
         }
 
     }

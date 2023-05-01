@@ -8,7 +8,7 @@ namespace mis_221_pa_5_rtmccanna
         private string trainingDate;
         private string trainerID;
         private string trainerName;
-        private string status = "booked";
+        private string status;
         static private int count;
 
         public Booking() {
@@ -29,7 +29,7 @@ namespace mis_221_pa_5_rtmccanna
             this.sessionID = sessionID;
         }
 
-        public void GetSessionID() {
+        public string GetSessionID() {
             return sessionID;
         }
 
@@ -37,7 +37,7 @@ namespace mis_221_pa_5_rtmccanna
             this.trainerName = trainerName;
         }
 
-        public void GetCustomerName() {
+        public string GetCustomerName() {
             return customerName;
         }
 
@@ -45,7 +45,7 @@ namespace mis_221_pa_5_rtmccanna
             this.customerEmail = customerEmail;
         }
 
-        public void GetCustomerEamil() {
+        public string GetCustomerEmail() {
             return customerEmail;
         }
 
@@ -53,7 +53,7 @@ namespace mis_221_pa_5_rtmccanna
             this.trainingDate = trainingDate;
         }
 
-        public void GetTrainingDate() {
+        public string GetTrainingDate() {
             return trainingDate;
         }
 
@@ -61,7 +61,7 @@ namespace mis_221_pa_5_rtmccanna
             this.trainerName = trainerName;
         }
 
-        public void GetTrainerName() {
+        public string GetTrainerName() {
             return trainerName;
         }
 
@@ -69,7 +69,7 @@ namespace mis_221_pa_5_rtmccanna
             this.trainerID = trainerID;
         }
 
-        public void GetTrainerID() {
+        public string GetTrainerID() {
             return trainerID;
         }
 
@@ -77,7 +77,7 @@ namespace mis_221_pa_5_rtmccanna
             this.status = status;
         }
 
-        public void GetStatus() {
+        public string GetStatus() {
             return status;
         }
 
@@ -95,7 +95,7 @@ namespace mis_221_pa_5_rtmccanna
 
         public override string ToString()
         {
-            return $"{count}:    {sessionID}    {customerName}    {customerEmail}    {trainingDate}    {trainerID}    {trainerName}    {status}";
+            return $"{sessionID}    {customerName}    {customerEmail}    {trainingDate}    {trainerID}    {trainerName}    {status}";
         }
 
         public string ToFile()

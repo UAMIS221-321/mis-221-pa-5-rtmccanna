@@ -3,15 +3,18 @@
 // **** Start Main ****
 
 Trainer[] trainers = new Trainer[50];
-TrainerUtility utility = new TrainerUtility(trainers);
+Listing[] listings = new Listing[50];
+Booking[] bookings = new Booking[50];
+TrainerUtility trainerUtility = new TrainerUtility(trainers);
 TrainerReport report = new TrainerReport(trainers);
-
-
+BookingUtility bookingUtility = new BookingUtility(bookings);
+ListingUtility listingUtility = new ListingUtility(listings);
 
 string userInput = GetMenuChoice();
 while (userInput != "5") 
 {
     Route(userInput);
+    userInput = GetMenuChoice();
 }
 
 // **** End Main ****
@@ -48,15 +51,15 @@ static bool ValidMenuChoice(string userInput){
     }
 }
 
-static void Route(string userInput){
+void Route(string userInput){
     if (Convert.ToInt32(userInput) == 1) {
-        
+        trainerUtility.GetMenuChoice();
     }
     if (Convert.ToInt32(userInput) == 2) {
-        
+        listingUtility.GetMenuChoice();
     }
     if (Convert.ToInt32(userInput) == 3) {
-        
+        bookingUtility.GetMenuChoice();
     }
     if (Convert.ToInt32(userInput) == 4) {
         

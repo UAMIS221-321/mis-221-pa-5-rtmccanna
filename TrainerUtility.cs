@@ -8,7 +8,57 @@ namespace mis_221_pa_5_rtmccanna
             this.trainers = trainers;
         }
 
-        public void GetAlltrainers() {
+        public string GetMenuChoice(){
+            this.DisplayMenu();
+            string userInput = Console.ReadLine();
+
+            while (!ValidMenuChoice(userInput)) {
+            Console.WriteLine("Invalid menu choice!\nPlease Enter a Valid Menu Choice.");
+            Console.WriteLine("Press any key to continue....");
+            Console.ReadKey();
+
+            this.DisplayMenu();
+            userInput = Console.ReadLine();
+            }
+
+            while (userInput != "4") {
+                Route(userInput);
+                userInput = GetMenuChoice();
+            }
+            
+
+            return userInput;
+        }
+
+        private void DisplayMenu() {
+            Console.Clear();
+            System.Console.WriteLine("Trainer Options:\n1:    Add Trainer\n2:    Edit Trainer\n3:    Delete Trainer\n4:    Exit\n\nTrainers:");
+            this.GetAlltrainersFromFile();
+            this.PrintAllTrainers();
+        }
+
+        static private bool ValidMenuChoice(string userInput){
+            if (Convert.ToInt32(userInput) == 1 || Convert.ToInt32(userInput) == 2 || Convert.ToInt32(userInput) == 3 || Convert.ToInt32(userInput) == 4) {
+            return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+        private void Route(string userInput){
+            if (Convert.ToInt32(userInput) == 1) {
+                this.AddTrainer();
+            }
+            if (Convert.ToInt32(userInput) == 2) {
+                this.UpdateTrainer();
+            }
+            if (Convert.ToInt32(userInput) == 3) {
+        
+            }
+        }
+
+        public void GetAllTrainers() {
             Trainer.SetCount(0);
             System.Console.WriteLine("Please enter the Name or stop to stop");
             string userInput = Console.ReadLine();
@@ -16,13 +66,13 @@ namespace mis_221_pa_5_rtmccanna
                 trainers[Trainer.GetCount()] = new Trainer();
                 trainers[Trainer.GetCount()].SetName(userInput);
 
-                System.Console.WriteLine("Please Enter the ID:");
+                System.Console.WriteLine("Please Enter their ID:");
                 trainers[Trainer.GetCount()].SetID(Console.ReadLine());
 
-                System.Console.WriteLine("Please Enter the number of Pages:");
+                System.Console.WriteLine("Please Enter their Email Address:");
                 trainers[Trainer.GetCount()].SetEmailAddress(Console.ReadLine());
                 
-                System.Console.WriteLine("Please Enter the Genre:");
+                System.Console.WriteLine("Please Enter their Mailing Address:");
                 trainers[Trainer.GetCount()].SetMailingAddress(Console.ReadLine());
                 Trainer.IncCount();
 
@@ -31,6 +81,7 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
+        // Loads trainers into an array when the program starts up
         public void GetAlltrainersFromFile() {
             StreamReader inFile = new StreamReader("trainers.txt");
             
@@ -47,11 +98,13 @@ namespace mis_221_pa_5_rtmccanna
             // close
             inFile.Close();
         }
+
+        // Adds trainer and then saves them to file with the save method
         public void AddTrainer() {
-            System.Console.WriteLine("Please Enter your Name:");
+            System.Console.WriteLine("Please enter the trainer's Name:");
             Trainer myTrainer = new Trainer();
             myTrainer.SetName(Console.ReadLine());
-            System.Console.WriteLine("Please enter your ID:");
+            System.Console.WriteLine("Please enter the trainer's ID:");
             myTrainer.SetID(Console.ReadLine());
             System.Console.WriteLine("Please enter your Email Address:");
             myTrainer.SetEmailAddress(Console.ReadLine());
@@ -64,6 +117,7 @@ namespace mis_221_pa_5_rtmccanna
             Save();
         }
 
+        // saves to file
         public void Save() {
             StreamWriter outFile = new StreamWriter("trainers.txt");
 
@@ -75,9 +129,10 @@ namespace mis_221_pa_5_rtmccanna
             outFile.Close();
         }
 
-        private int Find (string searchVal) {
+        // Processes search value, since the update process uses numbered menu selection all that was needed to be searched for is i
+        private int Find (int searchVal) {
             for (int i = 0; i < Trainer.GetCount(); i++) {
-                if(trainers[i].GetName().ToUpper() == searchVal.ToUpper()) {
+                if(i == searchVal) {
                     return i;
                 }
             }
@@ -85,9 +140,11 @@ namespace mis_221_pa_5_rtmccanna
             return -1;
         }
 
+        // Modified update method, subtracts 1 from search val to account for the +1 added earlier, accounting for array placement starting at 0
         public void UpdateTrainer() {
-            System.Console.WriteLine("What is the Name of the Trainer that you would like to update?");
-            string searchVal = Console.ReadLine();
+            System.Console.WriteLine("Please Select the Trainer you wish to update from the menu:");
+            int searchVal = int.Parse(Console.ReadLine());
+            searchVal = searchVal-1;
             int foundIndex = Find(searchVal);
 
             if (foundIndex != -1) {
@@ -124,10 +181,19 @@ namespace mis_221_pa_5_rtmccanna
         //     }
         // }
 
+        // Swap method
         private void Swap(int x, int y) {
             Trainer temp = trainers[x];
             trainers[x] = trainers[y];
             trainers[y] = temp;
+        }
+
+        // Prints all trainers
+        public void PrintAllTrainers() {
+            for (int i = 0; i < Trainer.GetCount(); i++){
+                System.Console.Write($"{i+1}:    ");
+                System.Console.WriteLine(trainers[i].ToString());
+            }
         }
     }
 }
