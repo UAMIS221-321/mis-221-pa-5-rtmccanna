@@ -90,7 +90,7 @@ namespace mis_221_pa_5_rtmccanna
         }
 
         static public void DecCount() {
-            count-1;
+            count--;
         }
 
         static public int GetCount() {

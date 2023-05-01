@@ -208,5 +208,40 @@ namespace mis_221_pa_5_rtmccanna
                 System.Console.WriteLine(bookings[i].ToString());
             }
         }
+
+        public void Delete()
+        {
+            //EXTRA When deleting trainer use for loop to rewrite each trainer back one so that you don't have records filled with N/A
+            System.Console.WriteLine("Please Selection the listing you would like to delete from the menu:");
+            int searchVal = int.Parse(Console.ReadLine());
+            searchVal = searchVal-1;
+            int foundIndex = Find(searchVal);
+ 
+            if(foundIndex != -1)
+            {
+                for(int i = foundIndex+1; i < Booking.GetCount(); i++)
+                {
+                    bookings[i].SetSessionID(bookings[i].GetSessionID());
+                    bookings[i-1] = bookings[i];
+                }
+ 
+                //I was trying to delete a specific line but couldn't figure out how,
+                //So what I'm doing is writing over the specific line, moving every line back one and then deleting the last
+                //line of the file because it leaves a duplicate of the last record
+ 
+                Save();
+ 
+                string[] lines = File.ReadAllLines("listings.txt");
+                File.WriteAllLines("listings.txt", lines.Take(lines.Length - 1).ToArray());
+                Listing.DecCount();
+            }
+ 
+            else
+            {
+                System.Console.WriteLine("This listing does not exist.");
+                System.Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
+            }
+        }
     }
 }

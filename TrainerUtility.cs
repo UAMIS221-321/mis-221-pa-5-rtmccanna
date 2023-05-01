@@ -32,7 +32,7 @@ namespace mis_221_pa_5_rtmccanna
 
         private void DisplayMenu() {
             Console.Clear();
-            System.Console.WriteLine("Trainer Options:\n1:    Add Trainer\n2:    Edit Trainer\n3:    Delete Trainer\n4:    Exit\n\nTrainers:");
+            System.Console.WriteLine("Trainer Options:\n\n1:    Add Trainer\n2:    Edit Trainer\n3:    Delete Trainer\n4:    Exit\n\nTrainers:");
             this.GetAlltrainersFromFile();
             this.PrintAllTrainers();
         }
@@ -54,7 +54,7 @@ namespace mis_221_pa_5_rtmccanna
                 this.UpdateTrainer();
             }
             if (Convert.ToInt32(userInput) == 3) {
-        
+                this.Delete();
             }
         }
 
@@ -193,6 +193,41 @@ namespace mis_221_pa_5_rtmccanna
             for (int i = 0; i < Trainer.GetCount(); i++){
                 System.Console.Write($"{i+1}:    ");
                 System.Console.WriteLine(trainers[i].ToString());
+            }
+        }
+
+        public void Delete()
+        {
+            //EXTRA When deleting trainer use for loop to rewrite each trainer back one so that you don't have records filled with N/A
+            System.Console.WriteLine("Please Selection the listing you would like to delete from the menu:");
+            int searchVal = int.Parse(Console.ReadLine());
+            searchVal = searchVal-1;
+            int foundIndex = Find(searchVal);
+ 
+            if(foundIndex != -1)
+            {
+                for(int i = foundIndex+1; i < Trainer.GetCount(); i++)
+                {
+                    trainers[i].SetName(trainers[i].GetName());
+                    trainers[i-1] = trainers[i];
+                }
+ 
+                //I was trying to delete a specific line but couldn't figure out how,
+                //So what I'm doing is writing over the specific line, moving every line back one and then deleting the last
+                //line of the file because it leaves a duplicate of the last record
+ 
+                Save();
+ 
+                string[] lines = File.ReadAllLines("trainers.txt");
+                File.WriteAllLines("trainers.txt", lines.Take(lines.Length - 1).ToArray());
+                Listing.DecCount();
+            }
+ 
+            else
+            {
+                System.Console.WriteLine("This trainer does not exist.");
+                System.Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
             }
         }
     }

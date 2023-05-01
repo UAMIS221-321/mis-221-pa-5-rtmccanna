@@ -32,7 +32,8 @@ namespace mis_221_pa_5_rtmccanna
 
         private void DisplayMenu() {
             Console.Clear();
-            System.Console.WriteLine("1:    Add Listing\n2:    Edit Listing\n3:    Delete Listing\n4:    Exit");
+            System.Console.WriteLine("Listing Options:\n\n1:    Add Listing\n2:    Edit Listing\n3:    Delete Listing\n4:    Exit");
+            this.GetAllListingsFromFile();
             this.PrintAllListings();
         }
 
@@ -53,7 +54,7 @@ namespace mis_221_pa_5_rtmccanna
                 this.UpdateListing();
             }
             if (Convert.ToInt32(userInput) == 3) {
-        
+                this.Delete();
             }
         }
 
@@ -217,7 +218,7 @@ namespace mis_221_pa_5_rtmccanna
             {
                 for(int i = foundIndex+1; i < Listing.GetCount(); i++)
                 {
-                    listings[i].SetListingID(listings[i].GetListingID()-1);
+                    listings[i].SetListingID(listings[i].GetListingID());
                     listings[i-1] = listings[i];
                 }
  
