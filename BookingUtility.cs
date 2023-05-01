@@ -13,6 +13,7 @@ namespace mis_221_pa_5_rtmccanna
             string userInput = Console.ReadLine();
 
             while (!ValidMenuChoice(userInput)) {
+            Console.Clear();
             Console.WriteLine("Invalid menu choice!\nPlease Enter a Valid Menu Choice.");
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
@@ -30,7 +31,8 @@ namespace mis_221_pa_5_rtmccanna
 
         private void DisplayMenu() {
             Console.Clear();
-            System.Console.WriteLine("Booking Options:\n1:    Add Booking\n2:    Edit Booking\n3:    Delete Booking\n4:    Exit");
+            System.Console.WriteLine("Booking Options:\n\n1:    Add Booking\n2:    Edit Booking\n3:    Delete Booking\n4:    Exit\n\nBookings:");
+            this.GetAllBookingsFromFile();
             this.PrintAllBookings();
         }
 
@@ -51,7 +53,7 @@ namespace mis_221_pa_5_rtmccanna
                 this.UpdateBooking();
             }
             if (Convert.ToInt32(userInput) == 3) {
-        
+                this.Delete();
             }
         }
 

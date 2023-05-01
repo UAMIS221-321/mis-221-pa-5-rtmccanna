@@ -13,6 +13,7 @@ namespace mis_221_pa_5_rtmccanna
             string userInput = Console.ReadLine();
 
             while (!ValidMenuChoice(userInput)) {
+            Console.Clear();
             Console.WriteLine("Invalid menu choice!\nPlease Enter a Valid Menu Choice.");
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
@@ -32,8 +33,8 @@ namespace mis_221_pa_5_rtmccanna
 
         private void DisplayMenu() {
             Console.Clear();
-            System.Console.WriteLine("Listing Options:\n\n1:    Add Listing\n2:    Edit Listing\n3:    Update Listing Status\n4:    Delete Listing\n5:    Exit");
-            this.GetAllListingsFromFile();
+            System.Console.WriteLine("Listing Options:\n\n1:    Add Listing\n2:    Edit Listing\n3:    Update Listing Status\n4:    Delete Listing\n5:    Exit\n\nListings:");
+            listingUtility.GetAllListingsFromFile();
             this.PrintAllListings();
         }
 

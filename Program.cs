@@ -6,9 +6,9 @@ Trainer[] trainers = new Trainer[50];
 Listing[] listings = new Listing[50];
 Booking[] bookings = new Booking[50];
 TrainerUtility trainerUtility = new TrainerUtility(trainers);
-TrainerReport report = new TrainerReport(trainers);
 BookingUtility bookingUtility = new BookingUtility(bookings);
 ListingUtility listingUtility = new ListingUtility(listings);
+Report report = new Report(bookings);
 
 string userInput = GetMenuChoice();
 while (userInput != "5") 
@@ -62,6 +62,6 @@ void Route(string userInput){
         bookingUtility.GetMenuChoice();
     }
     if (Convert.ToInt32(userInput) == 4) {
-        
+        report.GetMenuChoice();
     }
 }

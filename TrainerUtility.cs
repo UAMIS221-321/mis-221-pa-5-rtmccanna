@@ -13,6 +13,7 @@ namespace mis_221_pa_5_rtmccanna
             string userInput = Console.ReadLine();
 
             while (!ValidMenuChoice(userInput)) {
+            Console.Clear();
             Console.WriteLine("Invalid menu choice!\nPlease Enter a Valid Menu Choice.");
             Console.WriteLine("Press any key to continue....");
             Console.ReadKey();
