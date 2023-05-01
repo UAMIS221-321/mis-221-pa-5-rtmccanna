@@ -140,9 +140,9 @@ namespace mis_221_pa_5_rtmccanna
             outFile.Close();
         }
 
-        private int Find (string searchVal) {
+        private int Find (int searchVal) {
             for (int i = 0; i < Booking.GetCount(); i++) {
-                if(bookings[i].GetSessionID().ToUpper() == searchVal.ToUpper()) {
+                if(i == searchVal) {
                     return i;
                 }
             }
@@ -151,8 +151,9 @@ namespace mis_221_pa_5_rtmccanna
         }
 
         public void UpdateBooking() {
-            System.Console.WriteLine("Please select the booking's corresponding menu number that you would like to update:");
-            string searchVal = Console.ReadLine();
+            System.Console.WriteLine("Please select the booking you would like to update from the menu:");
+            int searchVal = int.Parse(Console.ReadLine());
+            searchVal = searchVal-1;
             int foundIndex = Find(searchVal);
 
             if (foundIndex != -1) {
@@ -203,6 +204,7 @@ namespace mis_221_pa_5_rtmccanna
 
         public void PrintAllBookings() {
             for (int i = 0; i < Booking.GetCount(); i++){
+                System.Console.Write($"{i+1}:    ");
                 System.Console.WriteLine(bookings[i].ToString());
             }
         }

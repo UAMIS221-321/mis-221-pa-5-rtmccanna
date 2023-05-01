@@ -80,6 +80,10 @@ namespace mis_221_pa_5_rtmccanna
             count++;
         }
 
+        static public void DecCount() {
+            count-1;
+        }
+
         static public int GetCount() {
             return count;
         }

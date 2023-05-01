@@ -137,9 +137,9 @@ namespace mis_221_pa_5_rtmccanna
             outFile.Close();
         }
 
-        private int Find (string searchVal) {
+        private int Find (int searchVal) {
             for (int i = 0; i < Listing.GetCount(); i++) {
-                if(listings[i].GetListingID().ToUpper() == searchVal.ToUpper()) {
+                if(i == searchVal) {
                     return i;
                 }
             }
@@ -148,8 +148,9 @@ namespace mis_221_pa_5_rtmccanna
         }
 
         public void UpdateListing() {
-            System.Console.WriteLine("What is the Listing ID of the listing you would like to update?");
-            string searchVal = Console.ReadLine();
+            System.Console.WriteLine("Please select the listing you wish to update from the menu:");
+            int searchVal = int.Parse(Console.ReadLine());
+            searchVal = searchVal-1;
             int foundIndex = Find(searchVal);
 
             if (foundIndex != -1) {
@@ -198,7 +199,44 @@ namespace mis_221_pa_5_rtmccanna
 
         public void PrintAllListings() {
             for (int i = 0; i < Listing.GetCount(); i++){
+                System.Console.Write($"{i+1}:    ");
                 System.Console.WriteLine(listings[i].ToString());
+            }
+        }
+
+
+        public void Delete()
+        {
+            //EXTRA When deleting trainer use for loop to rewrite each trainer back one so that you don't have records filled with N/A
+            System.Console.WriteLine("Please Selection the listing you would like to delete from the menu:");
+            int searchVal = int.Parse(Console.ReadLine());
+            searchVal = searchVal-1;
+            int foundIndex = Find(searchVal);
+ 
+            if(foundIndex != -1)
+            {
+                for(int i = foundIndex+1; i < Listing.GetCount(); i++)
+                {
+                    listings[i].SetListingID(listings[i].GetListingID()-1);
+                    listings[i-1] = listings[i];
+                }
+ 
+                //I was trying to delete a specific line but couldn't figure out how,
+                //So what I'm doing is writing over the specific line, moving every line back one and then deleting the last
+                //line of the file because it leaves a duplicate of the last record
+ 
+                Save();
+ 
+                string[] lines = File.ReadAllLines("listings.txt");
+                File.WriteAllLines("listings.txt", lines.Take(lines.Length - 1).ToArray());
+                Listing.DecCount();
+            }
+ 
+            else
+            {
+                System.Console.WriteLine("This listing does not exist.");
+                System.Console.WriteLine("Press any key to continue...");
+                Console.ReadKey();
             }
         }
     }

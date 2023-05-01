@@ -106,10 +106,10 @@ namespace mis_221_pa_5_rtmccanna
             myTrainer.SetName(Console.ReadLine());
             System.Console.WriteLine("Please enter the trainer's ID:");
             myTrainer.SetID(Console.ReadLine());
-            System.Console.WriteLine("Please enter your Email Address:");
-            myTrainer.SetEmailAddress(Console.ReadLine());
             System.Console.WriteLine("Please enter your Mailing Address:");
             myTrainer.SetMailingAddress(Console.ReadLine());
+            System.Console.WriteLine("Please enter your Email Address:");
+            myTrainer.SetEmailAddress(Console.ReadLine());
 
             trainers[Trainer.GetCount()] = myTrainer;
             Trainer.IncCount();
@@ -140,7 +140,7 @@ namespace mis_221_pa_5_rtmccanna
             return -1;
         }
 
-        // Modified update method, subtracts 1 from search val to account for the +1 added earlier, accounting for array placement starting at 0
+        // Modified update method, subtracts 1 from search val to account for the +1 added in the PrintAllTrainers method, accounting for array placement starting at 0
         public void UpdateTrainer() {
             System.Console.WriteLine("Please Select the Trainer you wish to update from the menu:");
             int searchVal = int.Parse(Console.ReadLine());
@@ -188,7 +188,7 @@ namespace mis_221_pa_5_rtmccanna
             trainers[y] = temp;
         }
 
-        // Prints all trainers
+        // Prints all trainers, to display on the menu it adds 1 to account for i having to start at 0
         public void PrintAllTrainers() {
             for (int i = 0; i < Trainer.GetCount(); i++){
                 System.Console.Write($"{i+1}:    ");
