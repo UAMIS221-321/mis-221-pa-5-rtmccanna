@@ -2,13 +2,14 @@ namespace mis_221_pa_5_rtmccanna
 {
     public class Booking
     {
+        // Object variables, status set to "Booked" by default
         private string sessionID;
         private string customerName;
         private string customerEmail;
         private string trainingDate;
         private string trainerID;
         private string trainerName;
-        private string status;
+        private string status = "Booked";
         static private int count;
 
         public Booking() {

@@ -180,6 +180,32 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
+        public void UpdateStatus() {
+            System.Console.WriteLine("Please select the Booking you wish to update the status of from the menu:");
+            int searchVal = int.Parse(Console.ReadLine());
+            searchVal = searchVal-1;
+            int foundIndex = Find(searchVal);
+
+            if (foundIndex != -1) {
+                System.Console.WriteLine("Please select the Booking's new status:\n1:    Completed\n2:    Cancelled");
+                int userInput = int.Parse(Console.ReadLine());
+                while (userInput == 1 && userInput == 2) {
+                    Console.Clear();
+                    System.Console.WriteLine("Please select one of the available options:\n1:    Completed\n2:    Cancelled");
+                    userInput = int.Parse(Console.ReadLine());
+                }
+                
+                if (userInput == 1) {
+                    bookings[foundIndex].SetStatus("Completed");
+                }
+                if (userInput == 2) {
+                    bookings[foundIndex].SetStatus("Cancelled");
+                }
+
+                Save();
+            }
+        }
+
         // public void Sort() {
         //     for (int i = 0; i < Booking.GetCount() - 1; i++) {
         //         int min = i;

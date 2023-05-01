@@ -21,7 +21,7 @@ namespace mis_221_pa_5_rtmccanna
             userInput = Console.ReadLine();
             }
 
-            while (userInput != "4") {
+            while (userInput != "5") {
                 Route(userInput);
                 userInput = GetMenuChoice();
             }
@@ -32,13 +32,13 @@ namespace mis_221_pa_5_rtmccanna
 
         private void DisplayMenu() {
             Console.Clear();
-            System.Console.WriteLine("Listing Options:\n\n1:    Add Listing\n2:    Edit Listing\n3:    Delete Listing\n4:    Exit");
+            System.Console.WriteLine("Listing Options:\n\n1:    Add Listing\n2:    Edit Listing\n3:    Update Listing Status\n4:    Delete Listing\n5:    Exit");
             this.GetAllListingsFromFile();
             this.PrintAllListings();
         }
 
         static private bool ValidMenuChoice(string userInput){
-            if (Convert.ToInt32(userInput) == 1 || Convert.ToInt32(userInput) == 2 || Convert.ToInt32(userInput) == 3 || Convert.ToInt32(userInput) == 4) {
+            if (Convert.ToInt32(userInput) == 1 || Convert.ToInt32(userInput) == 2 || Convert.ToInt32(userInput) == 3 || Convert.ToInt32(userInput) == 4 || Convert.ToInt32(userInput) == 5) {
             return true;
             }
             else {
@@ -54,6 +54,9 @@ namespace mis_221_pa_5_rtmccanna
                 this.UpdateListing();
             }
             if (Convert.ToInt32(userInput) == 3) {
+                this.UpdateStatus();
+            }
+            if (Convert.ToInt32(userInput) == 4) {
                 this.Delete();
             }
         }
@@ -171,8 +174,37 @@ namespace mis_221_pa_5_rtmccanna
                 Save();
             }
 
+            
+
             else {
                 System.Console.WriteLine("Listing Not Found");
+            }
+        }
+        
+        // Method dedicated to just updating the status of a listing
+        public void UpdateStatus() {
+            System.Console.WriteLine("Please select the Listing you wish to update the status of from the menu:");
+            int searchVal = int.Parse(Console.ReadLine());
+            searchVal = searchVal-1;
+            int foundIndex = Find(searchVal);
+
+            if (foundIndex != -1) {
+                System.Console.WriteLine("Please select the Listing's new status:\n1:    Available\n2:    Taken");
+                int userInput = int.Parse(Console.ReadLine());
+                while (userInput == 1 && userInput == 2) {
+                    Console.Clear();
+                    System.Console.WriteLine("Please select one of the available options:\n1:    Available\n2:    Taken");
+                    userInput = int.Parse(Console.ReadLine());
+                }
+                
+                if (userInput == 1) {
+                    listings[foundIndex].SetStatus("Available");
+                }
+                if (userInput == 2) {
+                    listings[foundIndex].SetStatus("Taken");
+                }
+
+                Save();
             }
         }
 
