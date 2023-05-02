@@ -8,6 +8,7 @@ namespace mis_221_pa_5_rtmccanna
             this.trainers = trainers;
         }
 
+        
         public string GetMenuChoice(){
             this.DisplayMenu();
             string userInput = Console.ReadLine();
@@ -59,29 +60,6 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
-        public void GetAllTrainers() {
-            Trainer.SetCount(0);
-            System.Console.WriteLine("Please enter the Name or stop to stop");
-            string userInput = Console.ReadLine();
-            while(userInput.ToUpper() != "STOP") {
-                trainers[Trainer.GetCount()] = new Trainer();
-                trainers[Trainer.GetCount()].SetName(userInput);
-
-                System.Console.WriteLine("Please Enter their ID:");
-                trainers[Trainer.GetCount()].SetID(Console.ReadLine());
-
-                System.Console.WriteLine("Please Enter their Email Address:");
-                trainers[Trainer.GetCount()].SetEmailAddress(Console.ReadLine());
-                
-                System.Console.WriteLine("Please Enter their Mailing Address:");
-                trainers[Trainer.GetCount()].SetMailingAddress(Console.ReadLine());
-                Trainer.IncCount();
-
-                System.Console.WriteLine("Please enter the Name or stop to stop");
-                userInput = Console.ReadLine();
-            }
-        }
-
         // Loads trainers into an array when the program starts up
         public void GetAlltrainersFromFile() {
             StreamReader inFile = new StreamReader("trainers.txt");
@@ -91,7 +69,6 @@ namespace mis_221_pa_5_rtmccanna
             string line = inFile.ReadLine();
             while (line != null) {
                 string[] temp = line.Split('#');
-                // wordCount += temp.Length;
                 trainers[Trainer.GetCount()] = new Trainer(temp[0], temp[1], temp[2], temp[3]);
                 Trainer.IncCount();
                 line = inFile.ReadLine();
@@ -102,11 +79,12 @@ namespace mis_221_pa_5_rtmccanna
 
         // Adds trainer and then saves them to file with the save method
         public void AddTrainer() {
-            System.Console.WriteLine("Please enter the trainer's Name:");
             Trainer myTrainer = new Trainer();
+            string displayID = this.MakeNewID();
+            myTrainer.SetID(displayID);
+            System.Console.WriteLine($"The New Trainer's ID is: {displayID}");
+            System.Console.WriteLine("Please enter the trainer's Name:");
             myTrainer.SetName(Console.ReadLine());
-            System.Console.WriteLine("Please enter the trainer's ID:");
-            myTrainer.SetID(Console.ReadLine());
             System.Console.WriteLine("Please enter your Mailing Address:");
             myTrainer.SetMailingAddress(Console.ReadLine());
             System.Console.WriteLine("Please enter your Email Address:");
@@ -174,10 +152,12 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
+        // Special thanks to David Hunt for helping me with this, I did have to modify it in order to work with my
+        // menu selection logic so that it would rely upon the user picking specific numbers instead of an attribute of an object.
         public void Delete()
         {
             //EXTRA When deleting trainer use for loop to rewrite each trainer back one so that you don't have records filled with N/A
-            System.Console.WriteLine("Please Selection the listing you would like to delete from the menu:");
+            System.Console.WriteLine("Please select the trainer you would like to delete from the menu:");
             int searchVal = int.Parse(Console.ReadLine());
             searchVal = searchVal-1;
             int foundIndex = Find(searchVal);
@@ -198,7 +178,7 @@ namespace mis_221_pa_5_rtmccanna
  
                 string[] lines = File.ReadAllLines("trainers.txt");
                 File.WriteAllLines("trainers.txt", lines.Take(lines.Length - 1).ToArray());
-                Listing.DecCount();
+                Trainer.DecCount();
             }
  
             else
@@ -207,6 +187,22 @@ namespace mis_221_pa_5_rtmccanna
                 System.Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
             }
+        }
+
+        // Random ID Generator, concatenates after the first cycle of the for loop
+        public string MakeNewID() {
+            string newID = "";
+            for (int i = 0; i < 6; i++) {
+                Random rnd = new Random();
+                int num = rnd.Next(0,9);
+                if (i == 0) {
+                    newID = num.ToString();
+                }
+                if (i > 0) {
+                    newID = newID + num.ToString();
+                }
+            }
+            return newID;
         }
     }
 }

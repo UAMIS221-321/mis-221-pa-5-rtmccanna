@@ -2,6 +2,7 @@ namespace mis_221_pa_5_rtmccanna
 {
     public class Trainer
     {
+        // Object variables
         private string name;
         private string ID;
         private string mailingAddress;

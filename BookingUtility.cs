@@ -8,6 +8,8 @@ namespace mis_221_pa_5_rtmccanna
             this.bookings = bookings;
         }
 
+        // Menu Startup, decided to put it in here because it helps focus and compartimentalize the menus on their corresponding
+        // classes and functions.
         public string GetMenuChoice(){
             this.DisplayMenu();
             string userInput = Console.ReadLine();
@@ -29,6 +31,7 @@ namespace mis_221_pa_5_rtmccanna
             return userInput;
         }
 
+        // Display menu, took me a minute to figure out to use '.this' instead of the utility object but it worked out in the end
         private void DisplayMenu() {
             Console.Clear();
             System.Console.WriteLine("Booking Options:\n\n1:    Add Booking\n2:    Edit Booking\n3:    Delete Booking\n4:    Exit\n\nBookings:");
@@ -36,6 +39,7 @@ namespace mis_221_pa_5_rtmccanna
             this.PrintAllBookings();
         }
 
+        // Check for valid menu choice.
         private bool ValidMenuChoice(string userInput){
             if (Convert.ToInt32(userInput) == 1 || Convert.ToInt32(userInput) == 2 || Convert.ToInt32(userInput) == 3 || Convert.ToInt32(userInput) == 4) {
             return true;
@@ -45,6 +49,7 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
+        // Route to ensure a smooth menu experience, so far pretty similar menu logic to my PA3
         private void Route(string userInput){
             if (Convert.ToInt32(userInput) == 1) {
                 this.AddBooking();
@@ -57,41 +62,7 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
-        public void GetAllBookings() {
-            Booking.SetCount(0);
-            System.Console.WriteLine("Please enter the Session ID or stop to stop");
-            string userInput = Console.ReadLine();
-            while(userInput.ToUpper() != "STOP") {
-                bookings[Booking.GetCount()] = new Booking();
-                bookings[Booking.GetCount()].SetSessionID(userInput);
-
-                System.Console.WriteLine("Please Enter the Session ID:");
-                bookings[Booking.GetCount()].SetSessionID(Console.ReadLine());
-
-                System.Console.WriteLine("Please Enter the number of Customer Name:");
-                bookings[Booking.GetCount()].SetCustomerName(Console.ReadLine());
-                
-                System.Console.WriteLine("Please Enter the Customer Email:");
-                bookings[Booking.GetCount()].SetCustomerEmail(Console.ReadLine());
-
-                System.Console.WriteLine("Please Enter the Training Date:");
-                bookings[Booking.GetCount()].SetTrainingDate(Console.ReadLine());
-
-                System.Console.WriteLine("Please Enter the Trainer ID:");
-                bookings[Booking.GetCount()].SetTrainerID(Console.ReadLine());
-
-                System.Console.WriteLine("Please Enter the Trainer Name:");
-                bookings[Booking.GetCount()].SetTrainerID(Console.ReadLine());
-
-                System.Console.WriteLine("Please Enter the Status:");
-                bookings[Booking.GetCount()].SetStatus(Console.ReadLine());
-                Booking.IncCount();
-
-                System.Console.WriteLine("Please enter the Name or stop to stop");
-                userInput = Console.ReadLine();
-            }
-        }
-
+        // pulls all of the bookings from the transactions file and puts them into an array
         public void GetAllBookingsFromFile() {
             StreamReader inFile = new StreamReader("transactions.txt");
             
@@ -100,7 +71,6 @@ namespace mis_221_pa_5_rtmccanna
             string line = inFile.ReadLine();
             while (line != null) {
                 string[] temp = line.Split('#');
-                // wordCount += temp.Length;
                 bookings[Booking.GetCount()] = new Booking(temp[0], temp[1], temp[2], temp[3], temp[4], temp[5], temp[6]);
                 Booking.IncCount();
                 line = inFile.ReadLine();
@@ -108,10 +78,13 @@ namespace mis_221_pa_5_rtmccanna
             // close
             inFile.Close();
         }
+
+        // Adds a booking to the end of the file
         public void AddBooking() {
-            System.Console.WriteLine("Please Enter the Session ID:");
             Booking myBooking = new Booking();
-            myBooking.SetSessionID(Console.ReadLine());
+            string displayID = this.MakeNewID();
+            myBooking.SetSessionID(displayID);
+            System.Console.WriteLine($"Your New Session's ID is: {displayID}");
             System.Console.WriteLine("Please enter the Customer Name:");
             myBooking.SetCustomerName(Console.ReadLine());
             System.Console.WriteLine("Please enter the Customer's Email:");
@@ -131,6 +104,7 @@ namespace mis_221_pa_5_rtmccanna
             Save();
         }
 
+        // Saves to file
         public void Save() {
             StreamWriter outFile = new StreamWriter("transactions.txt");
 
@@ -142,6 +116,7 @@ namespace mis_221_pa_5_rtmccanna
             outFile.Close();
         }
 
+        // Conducts a search through the array of objects
         private int Find (int searchVal) {
             for (int i = 0; i < Booking.GetCount(); i++) {
                 if(i == searchVal) {
@@ -152,6 +127,8 @@ namespace mis_221_pa_5_rtmccanna
             return -1;
         }
 
+        // Updates an object's attributes, wanted to write individual methods to only change one to improve user experience
+        // but couldn't get around to it
         public void UpdateBooking() {
             System.Console.WriteLine("Please select the booking you would like to update from the menu:");
             int searchVal = int.Parse(Console.ReadLine());
@@ -182,6 +159,7 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
+        // Only updates the status of the object so that its more efficient when that is the only thing being changed
         public void UpdateStatus() {
             System.Console.WriteLine("Please select the Booking you wish to update the status of from the menu:");
             int searchVal = int.Parse(Console.ReadLine());
@@ -215,14 +193,16 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
+        // Special thanks to David Hunt for helping me with this, I did have to modify it in order to work with my
+        // menu selection logic so that it would rely upon the user picking specific numbers instead of an attribute of an object.
         public void Delete()
         {
             //EXTRA When deleting trainer use for loop to rewrite each trainer back one so that you don't have records filled with N/A
-            System.Console.WriteLine("Please Selection the listing you would like to delete from the menu:");
+            System.Console.WriteLine("Please select the session you would like to delete from the menu:");
             int searchVal = int.Parse(Console.ReadLine());
             searchVal = searchVal-1;
             int foundIndex = Find(searchVal);
- 
+
             if(foundIndex != -1)
             {
                 for(int i = foundIndex+1; i < Booking.GetCount(); i++)
@@ -237,17 +217,33 @@ namespace mis_221_pa_5_rtmccanna
  
                 Save();
  
-                string[] lines = File.ReadAllLines("listings.txt");
-                File.WriteAllLines("listings.txt", lines.Take(lines.Length - 1).ToArray());
-                Listing.DecCount();
+                string[] lines = File.ReadAllLines("transactions.txt");
+                File.WriteAllLines("transactions.txt", lines.Take(lines.Length - 1).ToArray());
+                Booking.DecCount();
             }
  
             else
             {
-                System.Console.WriteLine("This listing does not exist.");
+                System.Console.WriteLine("This booking does not exist.");
                 System.Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
             }
+        }
+
+        // Random ID Generator, concatenates after the first cycle of the for loop
+        public string MakeNewID() {
+            string newID = "";
+            for (int i = 0; i < 6; i++) {
+                Random rnd = new Random();
+                int num = rnd.Next(0,9);
+                if (i == 0) {
+                    newID = num.ToString();
+                }
+                if (i > 0) {
+                    newID = newID + num.ToString();
+                }
+            }
+            return newID;
         }
     }
 }

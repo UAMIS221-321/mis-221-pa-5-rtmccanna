@@ -2,6 +2,7 @@ namespace mis_221_pa_5_rtmccanna
 {
     public class Listing
     {
+        // Object variables
         private string listingID;
         private string trainerName;
         private string date;
@@ -15,6 +16,7 @@ namespace mis_221_pa_5_rtmccanna
 
         }
 
+        // Listing Constructor
         public Listing(string listingID, string trainerName, string date, string time, int cost, string status) {
             this.listingID = listingID;
             this.trainerName = trainerName;
@@ -24,6 +26,7 @@ namespace mis_221_pa_5_rtmccanna
             this.status = status;
         }
 
+        // Getters and Setters, initially I had the random ID generator in here but decided to just move it to utility
         public void SetListingID(string listingID) {
             this.listingID = listingID;
         }
@@ -80,6 +83,7 @@ namespace mis_221_pa_5_rtmccanna
             count++;
         }
 
+        // DecCount for the deletion method
         static public void DecCount() {
             count--;
         }
@@ -88,11 +92,13 @@ namespace mis_221_pa_5_rtmccanna
             return count;
         }
 
+        // ToString to convert objects into string format to be written.
         public override string ToString()
         {
             return $"{listingID}    {trainerName}    {date}    {time}    {cost}    {status}";
         }
 
+        // ToFile, packs the object up to be stored in the corresponding .txt file
         public string ToFile()
         {
             return $"{listingID}#{trainerName}#{date}#{time}#{cost}#{status}";

@@ -8,6 +8,8 @@ namespace mis_221_pa_5_rtmccanna
             this.listings = listings;
         }
 
+        // Menu Startup, decided to put it in here because it helps focus and compartimentalize the menus on their corresponding
+        // classes and functions.
         public string GetMenuChoice(){
             this.DisplayMenu();
             string userInput = Console.ReadLine();
@@ -31,6 +33,7 @@ namespace mis_221_pa_5_rtmccanna
             return userInput;
         }
 
+        // Display menu, took me a minute to figure out to use '.this' instead of the utility object but it worked out in the end
         private void DisplayMenu() {
             Console.Clear();
             System.Console.WriteLine("Listing Options:\n\n1:    Add Listing\n2:    Edit Listing\n3:    Update Listing Status\n4:    Delete Listing\n5:    Exit\n\nListings:");
@@ -38,6 +41,7 @@ namespace mis_221_pa_5_rtmccanna
             this.PrintAllListings();
         }
 
+        // Check for valid menu choice.
         static private bool ValidMenuChoice(string userInput){
             if (Convert.ToInt32(userInput) == 1 || Convert.ToInt32(userInput) == 2 || Convert.ToInt32(userInput) == 3 || Convert.ToInt32(userInput) == 4 || Convert.ToInt32(userInput) == 5) {
             return true;
@@ -47,6 +51,7 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
+        // Route to ensure a smooth menu experience, so far pretty similar menu logic to my PA3
         private void Route(string userInput){
             if (Convert.ToInt32(userInput) == 1) {
                 this.AddListing();
@@ -62,38 +67,7 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
-        public void GetAlllistings() {
-            Listing.SetCount(0);
-            System.Console.WriteLine("Please enter the Listing ID or stop to stop");
-            string userInput = Console.ReadLine();
-            while(userInput.ToUpper() != "STOP") {
-                listings[Listing.GetCount()] = new Listing();
-                listings[Listing.GetCount()].SetListingID(userInput);
-
-                System.Console.WriteLine("Please Enter the Listing's ID:");
-                listings[Listing.GetCount()].SetListingID(Console.ReadLine());
-
-                System.Console.WriteLine("Please Enter the corresponding Trainer's Name:");
-                listings[Listing.GetCount()].SetTrainerName(Console.ReadLine());
-                
-                System.Console.WriteLine("Please Enter the corresponding Date:");
-                listings[Listing.GetCount()].SetDate(Console.ReadLine());
-
-                System.Console.WriteLine("Please Enter the corresponding Time:");
-                listings[Listing.GetCount()].SetTime(Console.ReadLine());
-
-                System.Console.WriteLine("Please Enter the corresponding Price:");
-                listings[Listing.GetCount()].SetCost(int.Parse(Console.ReadLine()));
-
-                System.Console.WriteLine("Please Enter the Listing's Status:");
-                listings[Listing.GetCount()].SetStatus(Console.ReadLine());
-                Listing.IncCount();
-
-                System.Console.WriteLine("Please enter the Name or stop to stop");
-                userInput = Console.ReadLine();
-            }
-        }
-
+        // pulls all of the listings from the listings file and puts them into an array
         public void GetAllListingsFromFile() {
             StreamReader inFile = new StreamReader("listings.txt");
             
@@ -102,7 +76,6 @@ namespace mis_221_pa_5_rtmccanna
             string line = inFile.ReadLine();
             while (line != null) {
                 string[] temp = line.Split('#');
-                // wordCount += temp.Length;
                 listings[Listing.GetCount()] = new Listing(temp[0], temp[1], temp[2], temp[3], int.Parse(temp[4]), temp[5]);
                 Listing.IncCount();
                 line = inFile.ReadLine();
@@ -110,10 +83,13 @@ namespace mis_221_pa_5_rtmccanna
             // close
             inFile.Close();
         }
+
+        // Adds a listing to the end of a file
         public void AddListing() {
-            System.Console.WriteLine("Please enter the Listing ID:");
             Listing myListing = new Listing();
-            myListing.SetListingID(Console.ReadLine());
+            string displayID = this.MakeNewID();
+            myListing.SetListingID(displayID);
+            System.Console.WriteLine($"Your New Listing's ID is: {displayID}");
             System.Console.WriteLine("Please enter the Trainer's Name:");
             myListing.SetTrainerName(Console.ReadLine());
             System.Console.WriteLine("Please enter the Listing Date:");
@@ -131,6 +107,7 @@ namespace mis_221_pa_5_rtmccanna
             Save();
         }
 
+        // saves to file
         public void Save() {
             StreamWriter outFile = new StreamWriter("listings.txt");
 
@@ -142,6 +119,7 @@ namespace mis_221_pa_5_rtmccanna
             outFile.Close();
         }
 
+        // Conducts a search through the array of objects
         private int Find (int searchVal) {
             for (int i = 0; i < Listing.GetCount(); i++) {
                 if(i == searchVal) {
@@ -152,6 +130,8 @@ namespace mis_221_pa_5_rtmccanna
             return -1;
         }
 
+        // Updates an object's attributes, wanted to write individual methods to only change one to improve user experience
+        // but couldn't get around to it
         public void UpdateListing() {
             System.Console.WriteLine("Please select the listing you wish to update from the menu:");
             int searchVal = int.Parse(Console.ReadLine());
@@ -182,7 +162,7 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
         
-        // Method dedicated to just updating the status of a listing
+        // Only updates the status of the object so that its more efficient when that is the only thing being changed
         public void UpdateStatus() {
             System.Console.WriteLine("Please select the Listing you wish to update the status of from the menu:");
             int searchVal = int.Parse(Console.ReadLine());
@@ -216,11 +196,12 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
-
+        // Special thanks to David Hunt for helping me with this, I did have to modify it in order to work with my
+        // menu selection logic so that it would rely upon the user picking specific numbers instead of an attribute of an object.
         public void Delete()
         {
             //EXTRA When deleting trainer use for loop to rewrite each trainer back one so that you don't have records filled with N/A
-            System.Console.WriteLine("Please Selection the listing you would like to delete from the menu:");
+            System.Console.WriteLine("Please select the listing you would like to delete from the menu:");
             int searchVal = int.Parse(Console.ReadLine());
             searchVal = searchVal-1;
             int foundIndex = Find(searchVal);
@@ -250,6 +231,22 @@ namespace mis_221_pa_5_rtmccanna
                 System.Console.WriteLine("Press any key to continue...");
                 Console.ReadKey();
             }
+        }
+
+        // Random ID Generator, concatenates after the first cycle of the for loop
+        public string MakeNewID() {
+            string newID = "";
+            for (int i = 0; i < 6; i++) {
+                Random rnd = new Random();
+                int num = rnd.Next(0,9);
+                if (i == 0) {
+                    newID = num.ToString();
+                }
+                if (i > 0) {
+                    newID = newID + num.ToString();
+                }
+            }
+            return newID;
         }
     }
 }

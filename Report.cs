@@ -8,6 +8,7 @@ namespace mis_221_pa_5_rtmccanna
             this.bookings = bookings;
         }
 
+        // Menu start up
         public string GetMenuChoice(){
             this.DisplayMenu();
             string userInput = Console.ReadLine();
@@ -29,12 +30,14 @@ namespace mis_221_pa_5_rtmccanna
             return userInput;
         }
 
+        // Displays the menu
         private void DisplayMenu() {
             Console.Clear();
             System.Console.WriteLine("What kind of a report would you like to generate?\n\n1:    Individual Customer Sessions:\n2:    Historical Customer Sessions\n3:    Historical Revenue Report\n4:    Exit");
             this.GetAllBookingsFromFile();
         }
 
+        // Checks for the validity of the menu choice
         private bool ValidMenuChoice(string userInput){
             if (Convert.ToInt32(userInput) == 1 || Convert.ToInt32(userInput) == 2 || Convert.ToInt32(userInput) == 3 || Convert.ToInt32(userInput) == 4) {
             return true;
@@ -44,6 +47,7 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
+        // Routes the user, very similar to my PA3 menu logic so far
         private void Route(string userInput){
             if (Convert.ToInt32(userInput) == 1) {
                 this.IndividualCustomerReport();
@@ -56,6 +60,7 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
+        // generates a report for an individual customer
         public void IndividualCustomerReport() {
             System.Console.WriteLine("Enter the Email of the Customer you would like to generate the report for:");
             string searchVal = Console.ReadLine();
@@ -71,6 +76,7 @@ namespace mis_221_pa_5_rtmccanna
             Console.ReadLine();
         }
 
+        // sorts the transactions file by date and then by customer, saves to the historicalreports.txt
         public void HistoricCustomerSessions() {
             this.Sort();
             this.PrintAllBookings();
@@ -81,6 +87,7 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
+        // Generates the overall historical revenue sorted by date, see comment on SortByTime() for details on how I sorted this.
         public void HistoricalRevenueReport() {
             this.SortByTime();
             this.PrintAllBookings();

@@ -16,6 +16,7 @@ namespace mis_221_pa_5_rtmccanna
 
         }
 
+        // Booking Constructor
         public Booking(string sessionID, string customerName, string customerEmail, string trainingDate, string trainerID, string trainerName, string status) {
             this.sessionID = sessionID;
             this.customerName = customerName;
@@ -26,6 +27,8 @@ namespace mis_221_pa_5_rtmccanna
             this.status = status;
         }
 
+
+        // Getters and Setters, initially I had the random ID generator in here but decided to just move it to utility
         public void SetSessionID(string sessionID) {
             this.sessionID = sessionID;
         }
@@ -35,7 +38,7 @@ namespace mis_221_pa_5_rtmccanna
         }
 
         public void SetCustomerName(string customerName) {
-            this.trainerName = trainerName;
+            this.customerName = customerName;
         }
 
         public string GetCustomerName() {
@@ -90,6 +93,7 @@ namespace mis_221_pa_5_rtmccanna
             count++;
         }
 
+        // DecCount for the deletion method
         static public void DecCount() {
             count--;
         }
@@ -98,11 +102,13 @@ namespace mis_221_pa_5_rtmccanna
             return count;
         }
 
+        // ToString to convert objects into string format to be written.
         public override string ToString()
         {
             return $"{sessionID}    {customerName}    {customerEmail}    {trainingDate}    {trainerID}    {trainerName}    {status}";
         }
 
+        // ToFile, packs the object up to be stored in the corresponding .txt file
         public string ToFile()
         {
             return $"{sessionID}#{customerName}#{customerEmail}#{trainingDate}#{trainerID}#{trainerName}#{status}";
