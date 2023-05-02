@@ -59,19 +59,30 @@ namespace mis_221_pa_5_rtmccanna
         public void IndividualCustomerReport() {
             System.Console.WriteLine("Enter the Email of the Customer you would like to generate the report for:");
             string searchVal = Console.ReadLine();
-            int foundIndex = Find(searchVal);
-
-            if (foundIndex != -1) {
-                
+            int count = 0;
+            for (int i = 0; i < Booking.GetCount(); i++) {
+                int foundIndex = Find(searchVal);
+                if (foundIndex != -1) {
+                    System.Console.WriteLine(bookings[foundIndex]);
+                    count++;
+                }
             }
+            System.Console.WriteLine($"This customer had a total of {count} session(s)\n\nPress Any Key to Continue...");
+            Console.ReadLine();
         }
 
         public void HistoricCustomerSessions() {
-            
+            this.Sort();
+            this.PrintAllBookings();
+            System.Console.WriteLine("Would you like to save this report?\n\n1:    Yes\n2:    No");
+            int userInput = int.Parse(Console.ReadLine());
+            if (userInput == 1) {
+                Save();
+            }
         }
 
         public void HistoricalRevenueReport() {
-            this.Sort();
+            this.SortByTime();
             this.PrintAllBookings();
             System.Console.WriteLine("Would you like to save this report?\n\n1:    Yes\n2:    No");
             int userInput = int.Parse(Console.ReadLine());
@@ -92,11 +103,28 @@ namespace mis_221_pa_5_rtmccanna
 
         // I decided to use Date Parse for the date sorting, initially I was thinking of pulling the dates out and treating them
         // as though they were '/' delimitted but decided to go with this as it was simpler and produced the same result
-        public void Sort() {
+        public void SortByTime() {
             for (int i = 0; i < Booking.GetCount() - 1; i++) {
                 int min = i;
                 for (int j = i + 1; j < Booking.GetCount(); j++) {
                     if (DateTime.Parse(bookings[j].GetTrainingDate()) < DateTime.Parse((bookings[min].GetTrainingDate()))) {
+                        min = j;
+                    }
+                }
+                if(min != i) {
+                    Swap(min, i);
+                }
+            }
+        }
+
+        // The sort method used for the customer date sort
+        public void Sort() {
+            for (int i = 0; i < Booking.GetCount() - 1; i++) {
+                int min = 1;
+                for (int j = i + 1; j < Booking.GetCount(); j++) {
+                    if (bookings[j].GetCustomerName().CompareTo(bookings[min].GetCustomerName()) < 0 ||
+                    (bookings[j].GetCustomerName() == bookings[min].GetCustomerName() && DateTime.Parse(bookings[j].GetTrainingDate()) < DateTime.Parse(bookings[min].GetTrainingDate()))
+                    ) {
                         min = j;
                     }
                 }
