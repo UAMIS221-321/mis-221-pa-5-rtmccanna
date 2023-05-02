@@ -166,29 +166,6 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
-        // public void Sort() {
-        //     for (int i = 0; i < Trainer.GetCount() - 1; i++) {
-        //         int min = i;
-        //         for (int j = i + 1; j < Trainer.GetCount(); j++) {
-        //             if (trainers[j].GetName().CompareTo(trainers[min].GetName()) < 0 ||
-        //             (trainers[j].GetName() == trainers[min].GetName() && trainers[j].GetID() < trainers[min].GetID())
-        //             ) {
-        //                 min = j;
-        //             }
-        //         }
-        //         if(min != i) {
-        //             Swap(min, i);
-        //         }
-        //     }
-        // }
-
-        // Swap method
-        private void Swap(int x, int y) {
-            Trainer temp = trainers[x];
-            trainers[x] = trainers[y];
-            trainers[y] = temp;
-        }
-
         // Prints all trainers, to display on the menu it adds 1 to account for i having to start at 0
         public void PrintAllTrainers() {
             for (int i = 0; i < Trainer.GetCount(); i++){

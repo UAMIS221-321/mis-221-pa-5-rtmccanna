@@ -208,28 +208,6 @@ namespace mis_221_pa_5_rtmccanna
             }
         }
 
-        // public void Sort() {
-        //     for (int i = 0; i < Booking.GetCount() - 1; i++) {
-        //         int min = i;
-        //         for (int j = i + 1; j < Booking.GetCount(); j++) {
-        //             if (bookings[j].GetName().CompareTo(bookings[min].GetName()) < 0 ||
-        //             (bookings[j].GetName() == bookings[min].GetName() && bookings[j].GetID() < bookings[min].GetID())
-        //             ) {
-        //                 min = j;
-        //             }
-        //         }
-        //         if(min != i) {
-        //             Swap(min, i);
-        //         }
-        //     }
-        // }
-
-        private void Swap(int x, int y) {
-            Booking temp = bookings[x];
-            bookings[x] = bookings[y];
-            bookings[y] = temp;
-        }
-
         public void PrintAllBookings() {
             for (int i = 0; i < Booking.GetCount(); i++){
                 System.Console.Write($"{i+1}:    ");

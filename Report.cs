@@ -3,7 +3,7 @@ namespace mis_221_pa_5_rtmccanna
     public class Report
     {
         private Booking[] bookings;
-
+        
         public Report (Booking[] bookings) {
             this.bookings = bookings;
         }
@@ -32,6 +32,7 @@ namespace mis_221_pa_5_rtmccanna
         private void DisplayMenu() {
             Console.Clear();
             System.Console.WriteLine("What kind of a report would you like to generate?\n\n1:    Individual Customer Sessions:\n2:    Historical Customer Sessions\n3:    Historical Revenue Report\n4:    Exit");
+            this.GetAllBookingsFromFile();
         }
 
         private bool ValidMenuChoice(string userInput){
@@ -57,7 +58,7 @@ namespace mis_221_pa_5_rtmccanna
 
         public void IndividualCustomerReport() {
             System.Console.WriteLine("Enter the Email of the Customer you would like to generate the report for:");
-            int searchVal = int.Parse(Console.ReadLine());
+            string searchVal = Console.ReadLine();
             int foundIndex = Find(searchVal);
 
             if (foundIndex != -1) {
@@ -66,21 +67,84 @@ namespace mis_221_pa_5_rtmccanna
         }
 
         public void HistoricCustomerSessions() {
-
+            
         }
 
         public void HistoricalRevenueReport() {
-
+            this.Sort();
+            this.PrintAllBookings();
+            System.Console.WriteLine("Would you like to save this report?\n\n1:    Yes\n2:    No");
+            int userInput = int.Parse(Console.ReadLine());
+            if (userInput == 1) {
+                Save();
+            }
         }
 
-        private int Find (int searchVal) {
+        private int Find (string searchVal) {
             for (int i = 0; i < Booking.GetCount(); i++) {
-                if(i == searchVal) {
+                if(bookings[i].GetCustomerEmail().ToUpper() == searchVal.ToUpper()) {
                     return i;
                 }
             }
 
             return -1;
+        }
+
+        // I decided to use Date Parse for the date sorting, initially I was thinking of pulling the dates out and treating them
+        // as though they were '/' delimitted but decided to go with this as it was simpler and produced the same result
+        public void Sort() {
+            for (int i = 0; i < Booking.GetCount() - 1; i++) {
+                int min = i;
+                for (int j = i + 1; j < Booking.GetCount(); j++) {
+                    if (DateTime.Parse(bookings[j].GetTrainingDate()) < DateTime.Parse((bookings[min].GetTrainingDate()))) {
+                        min = j;
+                    }
+                }
+                if(min != i) {
+                    Swap(min, i);
+                }
+            }
+        }
+
+        private void Swap(int x, int y) {
+            Booking temp = bookings[x];
+            bookings[x] = bookings[y];
+            bookings[y] = temp;
+        }
+
+        public void Save() {
+            StreamWriter outFile = new StreamWriter("historicalreports.txt");
+
+            for(int i = 0; i < Booking.GetCount(); i++) {
+                outFile.WriteLine(bookings[i].ToFile());
+
+            }
+
+            outFile.Close();
+        }
+
+        public void GetAllBookingsFromFile() {
+            StreamReader inFile = new StreamReader("transactions.txt");
+            
+            // process
+            Booking.SetCount(0);
+            string line = inFile.ReadLine();
+            while (line != null) {
+                string[] temp = line.Split('#');
+                // wordCount += temp.Length;
+                bookings[Booking.GetCount()] = new Booking(temp[0], temp[1], temp[2], temp[3], temp[4], temp[5], temp[6]);
+                Booking.IncCount();
+                line = inFile.ReadLine();
+            }
+            // close
+            inFile.Close();
+        }
+
+        public void PrintAllBookings() {
+            for (int i = 0; i < Booking.GetCount(); i++){
+                System.Console.Write($"{i+1}:    ");
+                System.Console.WriteLine(bookings[i].ToString());
+            }
         }
     }
 }

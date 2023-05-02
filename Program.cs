@@ -38,8 +38,7 @@ static string GetMenuChoice(){
 
 static void DisplayMenu() {
     Console.Clear();
-    System.Console.WriteLine("Welcome to the Crimson Gym!");
-    System.Console.WriteLine("1:    Manage Trainer Data\n2:    Manage Listing Data\n3:    Manage Customer Booking Data\n4:    Run Reports\n5:    Exit");
+    System.Console.WriteLine("Welcome to the Starlit Chateau Gymnasium Data Management Program!\n\n1:    Manage Trainer Data\n2:    Manage Listing Data\n3:    Manage Customer Booking Data\n4:    Run Reports\n5:    Exit");
 }
 
 static bool ValidMenuChoice(string userInput){

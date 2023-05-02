@@ -34,7 +34,7 @@ namespace mis_221_pa_5_rtmccanna
         private void DisplayMenu() {
             Console.Clear();
             System.Console.WriteLine("Listing Options:\n\n1:    Add Listing\n2:    Edit Listing\n3:    Update Listing Status\n4:    Delete Listing\n5:    Exit\n\nListings:");
-            listingUtility.GetAllListingsFromFile();
+            this.GetAllListingsFromFile();
             this.PrintAllListings();
         }
 
@@ -207,28 +207,6 @@ namespace mis_221_pa_5_rtmccanna
 
                 Save();
             }
-        }
-
-        // public void Sort() {
-        //     for (int i = 0; i < Listing.GetCount() - 1; i++) {
-        //         int min = i;
-        //         for (int j = i + 1; j < Listing.GetCount(); j++) {
-        //             if (listings[j].GetName().CompareTo(listings[min].GetName()) < 0 ||
-        //             (listings[j].GetName() == listings[min].GetName() && listings[j].GetID() < listings[min].GetID())
-        //             ) {
-        //                 min = j;
-        //             }
-        //         }
-        //         if(min != i) {
-        //             Swap(min, i);
-        //         }
-        //     }
-        // }
-
-        private void Swap(int x, int y) {
-            Listing temp = listings[x];
-            listings[x] = listings[y];
-            listings[y] = temp;
         }
 
         public void PrintAllListings() {
